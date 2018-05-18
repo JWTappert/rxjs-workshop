@@ -1,0 +1,31 @@
+{
+  "name": "rxworkshop-1",
+  "version": "1.0.0",
+  "description": "a workshop for rxjs",
+  "main": "index.js",
+  "scripts": {
+    "start": "node exercises/demo-server/app.js",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "generate": "split-guide generate --templates-dir src/"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/blesh/rxworkshop-1.git"
+  },
+  "author": "Ben Lesh <ben@benlesh.com>",
+  "license": "SEE LICENSE IN license.txt",
+  "bugs": {
+    "url": "https://github.com/blesh/rxworkshop-1/issues"
+  },
+  "homepage": "https://github.com/blesh/rxworkshop-1#readme",
+  "dependencies": {
+    "rxjs": "^5.5.0"
+  },
+  "devDependencies": {
+    "cors": "^2.8.3",
+    "express": "^4.14.0",
+    "nodemon": "^1.11.0",
+    "split-guide": "^1.2.0",
+    "ws": "^1.1.1"
+  }
+}
