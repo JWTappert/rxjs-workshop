@@ -1,18 +1,16 @@
-const Rx = require('rxjs/Rx');
+const Rx = require("rxjs/Rx");
 
 // This is a run-of-the mill iterable. It could be from a generator or anything
 // that supports the iterable interface.
-const iterable = require('./fixtures/10-iterable');
+const iterable = require("./fixtures/10-iterable");
 
 //TODO: create an observable the `data` array with `Observable.from`
 
-console.log('start');
-source$.subscribe(
-  x => console.log(x),
-  err => console.error(err),
-  () => console.info('done')
-);
-console.log('stop');
+const source$ = Rx.Observable.from(iterable);
+
+console.log("start");
+source$.subscribe(x => console.log(x), err => console.error(err), () => console.info("done"));
+console.log("stop");
 
 /**
   NOTE: expected output
