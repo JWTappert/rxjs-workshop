@@ -1,14 +1,23 @@
-const { Subject } = require('rxjs/Subject');
-const createLoggingObserver = require('./helpers/createLoggingObserver');
+const { Subject } = require("rxjs/Subject");
+const createLoggingObserver = require("./helpers/createLoggingObserver");
 
-const observerA = createLoggingObserver('A');
-const observerB = createLoggingObserver('B');
+const observerA = createLoggingObserver("A");
+const observerB = createLoggingObserver("B");
 
 // TODO: Create and subscribe to a subject with `observerA` and `observerB`
 // TODO: synchronously notify the subject with values 1, 2, 3 via `next` and `complete`
 // TODO: Try nexting after complete.
 // TODO: Try the same thing with `subject.error()` instead of complete
 
+const subject$ = new Subject();
+
+subject$.subscribe(observerA);
+subject$.subscribe(observerB);
+
+subject$.next(1);
+subject$.next(2);
+subject$.next(3);
+subject$.complete();
 
 /**
   NOTE: expected output
