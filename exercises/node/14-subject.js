@@ -19,6 +19,9 @@ subject$.next(2);
 subject$.next(3);
 subject$.complete();
 
+// this will never get sent
+subject.next("haha");
+
 /**
   NOTE: expected output
   A 1
