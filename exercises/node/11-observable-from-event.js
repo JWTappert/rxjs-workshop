@@ -1,4 +1,5 @@
-const Resource = require('./fixtures/6-Resource');
+const Resource = require("./fixtures/6-Resource");
+const Rx = require("rxjs/Rx");
 
 // TODO: create an observable with the `Observable.fromEvent` over the same
 // `Resource` we used in exercise 6.
@@ -13,14 +14,15 @@ resource.removeEventListener('data', handler); // stop listening for data events
 HINT: You'll probably have to create the `Resource` first.
 */
 
+const resource = new Resource();
+const source$ = Rx.Observable.fromEvent(resource, "data");
 
-const subscription = source$.subscribe(
-  x => console.log(x),
-  err => console.error(err),
-  () => console.info('done')
-);
+const subscription = source$.subscribe(x => console.log(x), err => console.error(err), () => console.info("done"));
 
-setTimeout(() => subscription.unsubscribe(), 2000);
+setTimeout(() => subscription.unsubscribe(), 2100);
+// thing to note: in the above set timeout call, the time WAS set to 2000 but that caused
+// a collision with the resource output, that is why schedulers are in RxJs to test without
+// worrying about collision like that.
 
 /**
 NOTE: output should be:
