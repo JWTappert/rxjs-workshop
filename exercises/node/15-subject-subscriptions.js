@@ -13,7 +13,6 @@ subject.next(1);
 subject.next(2);
 subA.unsubscribe();
 subject.next(3);
-subject.unsubscribe();
 subject.next(4);
 subB.unsubscribe();
 subject.next(5);
@@ -35,3 +34,7 @@ subject.complete();
 // NOTE: this `unsubscribe` is really just removing the observer from the
 // subject's internal list of observers.
 // TODO: Bonus... try calling unsubscribe on the Subject itself in a few places!
+
+// this will go through observer list and unsubscribe to each
+// then flag this subject when anyone tries to push into this
+subject.unsubscribe();
