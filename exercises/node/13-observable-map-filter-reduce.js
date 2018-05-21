@@ -22,6 +22,11 @@ data$
 		const newState = state + x;
 		return newState;
 	})
+	// scan is exactly like reduce except it emits on every step
+	.scan((state, x) => {
+		const newState = state + x;
+		return newState;
+	})
 	.subscribe(x => console.log(x));
 
 // how it should be done v6.x
