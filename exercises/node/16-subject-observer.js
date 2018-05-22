@@ -1,5 +1,5 @@
-const { Subject } = require('rxjs/Subject');
-const data$ = require('./fixtures/16-data');
+const { Subject } = require("rxjs/Subject");
+const data$ = require("./fixtures/16-data");
 
 const subject = new Subject();
 
@@ -7,6 +7,11 @@ const subject = new Subject();
   1. Subscribe to `subject` and log it's output
   2. Use the `subject` to subscribe to `data$`
 */
+
+subject.subscribe(x => console.log(x));
+
+// subject does have the shape of an observer
+data$.subscribe(subject);
 
 /**
   NOTE: expected output
