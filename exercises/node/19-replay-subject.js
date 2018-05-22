@@ -1,5 +1,5 @@
-const { ReplaySubject } = require('rxjs/ReplaySubject');
-const { meatspaceSystem, temp$ } = require('./fixtures/19-meatspace');
+const { ReplaySubject } = require("rxjs/ReplaySubject");
+const { meatspaceSystem, temp$ } = require("./fixtures/19-meatspace");
 
 /**
   NOTE: setup
@@ -23,13 +23,22 @@ const { meatspaceSystem, temp$ } = require('./fixtures/19-meatspace');
   1. Notify all incoming users of the most recent THREE temperatures.
   2. Be sure the users don't have to wait for the first value.
 */
-meatspaceSystem((user) => {
-  // TODO: notify users with `user.sendTemperature(temp)`
 
-  // `user.onleave` is called when the user stop watching values
-  user.onleave = () => {
-    // TODO: stop sending temps to the user when they leave
-  }
+// replay subject allows you to control the number of values stored in
+// the subject. In this case we chose 3. It is unbounded and by default
+// it will hold all values
+const subject = new ReplaySubject(3);
+
+temp$.subscribe(subject);
+
+meatspaceSystem(user => {
+	// TODO: notify users with `user.sendTemperature(temp)`
+	const sub = subject.subscribe(temp => user.sendTemperature(temp));
+	// `user.onleave` is called when the user stop watching values
+	user.onleave = () => {
+		// TODO: stop sending temps to the user when they leave
+		sub.unsubscribe();
+	};
 });
 
 /**

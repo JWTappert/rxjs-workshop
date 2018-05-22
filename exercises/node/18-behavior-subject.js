@@ -24,7 +24,10 @@ const { meatspaceSystem, temp$ } = require("./fixtures/18-meatspace");
   2. Be sure the users don't have to wait for the first value.
 */
 
-const subject = new BehaviorSubject("n/a");
+// behaviorsubject is similar to subject except it stores its last value
+// anyone that subscribes to the behavior subject will immediately get
+// its last value
+const subject = new BehaviorSubject(0);
 
 temp$.subscribe(subject);
 
