@@ -15,14 +15,15 @@ const fizzbuzzObserver = createLoggingObserver("fizzbuzz");
 */
 
 const subject = new Subject();
+const multi$ = scarce$.multicast(subject);
 
-subject.filter(x => x % 3 === 0).subscribe(fizzObserver);
+multi$.filter(x => x % 3 === 0).subscribe(fizzObserver);
 
-subject.filter(x => x % 5 === 0).subscribe(buzzObserver);
+multi$.filter(x => x % 5 === 0).subscribe(buzzObserver);
 
-subject.filter(x => x % 15 === 0).subscribe(fizzbuzzObserver);
+multi$.filter(x => x % 15 === 0).subscribe(fizzbuzzObserver);
 
-scarce$.subscribe(subject);
+const sub = multi$.connect();
 
 /**
   NOTE: expected output
