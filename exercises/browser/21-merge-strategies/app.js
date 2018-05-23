@@ -1,16 +1,15 @@
-(function () {
-  const drop = document.querySelector('#drop');
-  const dropped = document.querySelector('#dropped');
-  const completed = document.querySelector('#completed');
-  const svg  = document.querySelector('svg');
+(function() {
+	const drop = document.querySelector("#drop");
+	const dropped = document.querySelector("#dropped");
+	const completed = document.querySelector("#completed");
+	const svg = document.querySelector("svg");
 
-  const { Observable } = Rx;
-  const { fromEvent } = Observable;
-  const { mergeMap, scan, map, startWith, concat } = Rx.operators;
+	const { Observable, mergeMap, scan, map, startWith, concat } = Rx;
+	const { fromEvent } = Observable;
 
-  const dropClick$ = fromEvent(drop, 'click');
+	const dropClick$ = fromEvent(drop, "click");
 
-  /**
+	/**
     TODO: part 1
     1. Use `addBall` and a merging strategy to add an animated ball to the svg element
        for each click of the `drop` button as soon as the `drop` button is clicked.
@@ -45,7 +44,48 @@
         }
   */
 
+	// dropClick$
+	// 	.map(() => addBall(svg))
+	// 	.mergeAll()
+	// 	.subscribe(x => console.log(x));
 
+	// dropClick$
+	// 	.map(() => addBall(svg))
+	// 	.concatAll()
+	// 	.subscribe();
 
-  // our stream of drop clicks
-}());
+	// // good for http requests that supercede one another
+	// dropClick$
+	// 	.map(() => addBall(svg))
+	// 	.switch()
+	// 	.subscribe();
+
+	// switch the merge strategy to alter behavior
+	dropClick$
+		.mergeMap(() => {
+			return addBall(svg)
+				.mapTo({ type: "IGNORE" })
+				.startWith({ type: "DROPPED" })
+				.concat(Rx.Observable.of({ type: "COMPLETED" }));
+		})
+		.scan(
+			(state, action) => {
+				switch (action.type) {
+					case "DROPPED":
+						state.dropped++;
+						return state;
+					case "COMPLETED":
+						state.completed++;
+						return state;
+					default:
+						return state;
+				}
+			},
+			{ dropped: 0, completed: 0 }
+		)
+		.startWith({ dropped: 0, completed: 0 })
+		.subscribe(state => {
+			dropped.innerText = state.dropped;
+			completed.innerText = state.completed;
+		});
+})();
