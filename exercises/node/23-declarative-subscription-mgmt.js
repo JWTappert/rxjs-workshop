@@ -1,9 +1,10 @@
-const noisyUnsubscriber = require('./fixtures/22-noisy-unsubscriber');
+const noisyUnsubscriber = require("./fixtures/22-noisy-unsubscriber");
+const Rx = require("rxjs");
 
 // NOTE: Setup
-const sourceA$ = noisyUnsubscriber('a');
-const sourceB$ = noisyUnsubscriber('b');
-const sourceC$ = noisyUnsubscriber('c');
+const sourceA$ = noisyUnsubscriber("a");
+const sourceB$ = noisyUnsubscriber("b");
+const sourceC$ = noisyUnsubscriber("c");
 
 /** TODO:
   using only a *single* subscribe call:
@@ -13,6 +14,20 @@ const sourceC$ = noisyUnsubscriber('c');
   2. unsubscribe from `sourceA$` after 900ms
   3. unsubscribe from the other two after 1300ms
 */
+// takeUntil(notifier$)
+
+sourceA$.takeUntil(Rx.Observable.timer(900)).subscribe(x => console.log(x));
+sourceB$
+	.merge(sourceC$)
+	.takeUntil(Rx.Observable.timer(1300))
+	.subscribe(x => console.log(x));
+
+// or
+
+Rx.Observable.merge(sourceA$.takeUntil(Rx.Observable.timer(900)), sourceB$, sourceC$)
+	.takeUntil(Rx.Observable.timer(1300))
+	.subscribe(x => console.log(x));
+
 /**
   NOTE: expected output
   a: 0
