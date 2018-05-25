@@ -1,10 +1,10 @@
-const { Subscription } = require('rxjs/Subscription');
-const noisyUnsubscriber = require('./fixtures/22-noisy-unsubscriber');
+const { Subscription } = require("rxjs/Subscription");
+const noisyUnsubscriber = require("./fixtures/22-noisy-unsubscriber");
 
 // NOTE: Setup
-const sourceA$ = noisyUnsubscriber('a');
-const sourceB$ = noisyUnsubscriber('b');
-const sourceC$ = noisyUnsubscriber('c');
+const sourceA$ = noisyUnsubscriber("a");
+const sourceB$ = noisyUnsubscriber("b");
+const sourceC$ = noisyUnsubscriber("c");
 
 // we're going to clean these subscriptions up on a timer (later)
 const subA = sourceA$.subscribe(x => console.log(x));
@@ -12,15 +12,23 @@ const subB = sourceB$.subscribe(x => console.log(x));
 const subC = sourceC$.subscribe(x => console.log(x));
 
 // TODO: manage subscriptions by building a single parent subscription
+const sub = new Subscription();
+const childSubA = sub.add(subA);
+const childSubB = sub.add(subB);
+const childSubc = sub.add(subC);
 
 setTimeout(() => {
-  // TODO: unsubscribe from `subA` so that it's removed from your
-  //       parent subscription
+	// TODO: unsubscribe from `subA` so that it's removed from your
+	//       parent subscription
+	// this will REMOVE and UNSUBSCRIBE
+	childSubA.unsubscribe();
 }, 900);
 
 setTimeout(() => {
-  // TODO: unsubscribe from all remaining subscriptions (`subB` and `subC`)
-  //       using a single parent subscription
+	// TODO: unsubscribe from all remaining subscriptions (`subB` and `subC`)
+	//       using a single parent subscription
+	// this will JUST UNSUBSCRIBE
+	sub.unsubscribe();
 }, 1300);
 
 /**

@@ -62,7 +62,7 @@
 
 	// switch the merge strategy to alter behavior
 	dropClick$
-		.switchMap(() => listenFor("drop a ball"))
+		// .switchMap(() => listenFor("drop a ball")) listens for sounds
 		.mergeMap(() => {
 			return addBall(svg)
 				.mapTo({ type: "IGNORE" })
